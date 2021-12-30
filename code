@@ -1,0 +1,83 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    unsigned int n;
+    double *a, *b;
+    FILE *test, *result, *binar;
+
+    test = fopen("test.txt", "r");
+    fscanf(test, "%u", &n);
+
+  a = (double *) calloc(n, sizeof(double));
+   if(a == NULL) {
+       printf("\nError");
+       printf("\nPress any key to exit...");
+       getch();
+   }
+    arr(a, n);
+
+    result = fopen("result.txt", "w");
+    if(result == NULL) {
+      printf("Error\n");
+      printf("Press any key to exit...");
+      getch();
+   }
+    for (int i = 0; i < n; i++)  fprintf(result, "%3d", a[i]);
+
+    binar = fopen("binar.bin", "wb");
+    if(binar == NULL) {
+      printf("Error\n");
+      printf("Press any key to exit...");
+      getch();
+   }
+    for (int i = 0; i < n; i++) fwrite(&a[i], sizeof (double), 1, binar);
+
+
+if ((fclose(test) !=0) || (fclose(result) !=0) || (fclose(binar) !=0)) {
+    printf("Error\n");
+      printf("Press any key to exit...");
+      getch();
+}
+
+
+
+binar = fopen("binar.bin", "rb");
+    if(binar == NULL) {
+      printf("Error\n");
+      printf("Press any key to exit...");
+      getch();
+   }
+
+   b = (double*) malloc(n * sizeof (double));
+    if(b == NULL) {
+      printf("Error\n");
+      printf("Press any key to exit...");
+      getch();
+    }
+
+       for (int i = 0; i < n; i++) {
+            fread(b, sizeof (double), n, binar);
+            printf("\nb[%i]=%d", i, b[i]);
+    }
+
+    free(a);
+    free(b);
+
+    if (fclose(binar) !=0) {
+    printf("Error\n");
+      printf("Press any key to exit...");
+      getch();
+}
+
+    return 0;
+}
+
+void arr(double *a, int n)
+{
+ for (int i = 0; i < n; i++) {
+    printf(" a[%i]:", i);
+    scanf("%i", &a[i]);
+ }
+}
